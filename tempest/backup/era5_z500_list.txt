@@ -1,0 +1,1 @@
+/scratch/b/b382006/obs/era5/daily/z500/post_era5_z500_day.nc

@@ -1,0 +1,31 @@
+
+********************************************************************************
+*                                                                              *
+*  This is the automated job summary provided by DKRZ.                         *
+*  If you encounter problems, need assistance or have any suggestion, please   *
+*  write an email to                                                           *
+*                                                                              *
+*  --  support@dkrz.de --                                                      *
+*                                                                              *
+*                       We hope you enjoyed the DKRZ supercomputer LEVANTE ... *
+*
+* JobID            : 6944091
+* JobName          : run_block_rev                                     
+* Account          : bb1153
+* User             : b382006 (250176), bb1153 (1639)                   
+* Partition        : shared
+* QOS              : normal
+* Nodelist         : l40008 (1)                                                
+* Submit date      : 2023-09-19T16:41:08
+* Start time       : 2023-09-19T17:12:30
+* End time         : 2023-09-19T17:19:02
+* Elapsed time     : 00:06:32 (Timelimit=1-00:00:00)                   
+* Command          : /home/b/b382006/tools/Blocking/tempest/blocks_era5.sh
+* WorkDir          : /home/b/b382006/tools/Blocking/tempest
+*
+* StepID | JobName      NodeHours    MaxRSS [Byte] (@task)
+* ------------------------------------------------------------------------------
+* batch  | batch           0.0094
+* extern | extern          0.0094                2564K (0)
+* ------------------------------------------------------------------------------
+

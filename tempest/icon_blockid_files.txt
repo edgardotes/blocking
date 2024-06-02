@@ -1,0 +1,6 @@
+/scratch/b/b382006/nextgems/cycle3/ngc3028/factory/tempest/icon_z500_blockid_2020.nc
+/scratch/b/b382006/nextgems/cycle3/ngc3028/factory/tempest/icon_z500_blockid_2021.nc
+/scratch/b/b382006/nextgems/cycle3/ngc3028/factory/tempest/icon_z500_blockid_2022.nc
+/scratch/b/b382006/nextgems/cycle3/ngc3028/factory/tempest/icon_z500_blockid_2023.nc
+/scratch/b/b382006/nextgems/cycle3/ngc3028/factory/tempest/icon_z500_blockid_2024.nc
+/scratch/b/b382006/nextgems/cycle3/ngc3028/factory/tempest/icon_z500_blockid_2025.nc

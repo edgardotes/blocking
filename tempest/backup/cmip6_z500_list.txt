@@ -1,0 +1,1 @@
+/scratch/b/b382006/cmip6/MPI-ESM1-2-LR/r2i1p1f1/daily/post_cmip6_z500_day.nc
