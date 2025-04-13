@@ -43,11 +43,15 @@ xr_data=xr_data.isel(plev=0,drop=True) # remove plev
 for year in years:
 ###==output
     dir_res=inpath+model+"/"+member_id+"/block/ABS_500"
+    IB_ofile= "IB_ABS-Z500_"+str(year)+".nc"
+    EIB_ofile= "EIB_ABS-Z500_"+str(year)+".nc"
     ofile= "block_ABS-Z500_"+str(year)+".nc"
 
     if not os.path.exists(dir_res):
         os.makedirs(dir_res)
 
+    IB_OUTPATH=dir_res+'/'+ofile
+    EIB_OUTPATH=dir_res+'/'+ofile
     OUTPATH=dir_res+'/'+ofile
 
     print(infile,OUTPATH)
@@ -61,17 +65,6 @@ for year in years:
     blk.import_xarray(data)
 
     blk.calculate_gph_from_gp(gp_name='Z') # calculate geopotential height
-
-#    print(data.time[0:365])
-#    print(data.time[364])
-#    delta = np.unique((data.time[1:] - data.time[:-1]).days)
-#    print('delta',delta)
-#    var=data.time.to_index()
-#    print(var)
-#    delta = np.unique((var[1:] - var[:-1]).astype('timedelta64[D]'))
-#    delta = (var[1:] - var[:-1]).astype('timedelta64[D]')
-#    print('delta',delta[58])
-
 
     blk.set_up(time_name='time',longitude_name='lon', latitude_name='lat')
 
@@ -92,7 +85,8 @@ for year in years:
     latitude_pm_degree=2)
 
 # save to disk
-    blk
-    blk.save(OUTPATH, 'Blocking')
+    blk.save(IB_OUTPATH, 'IB')
+    blk.save(EIB_OUTPATH, 'ExtendedIB')
+#    blk.save(OUTPATH, 'Blocking')
 
     data.close()
