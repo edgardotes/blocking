@@ -724,11 +724,116 @@ def calc_gh_anom():
         anoms.to_netcdf(outdir+outfile)
 
 
+def calc_gh_anom_day(year,model,member):
+    """
+    calculate gh anomaly from daily cmip6 
+
+    """
+
+    # ======
+    #import modules
+#    %matplotlib inline
+    from contrack import contrack
+    import xarray as xr
+    import datetime
+    import matplotlib.pyplot as plt
+    import cartopy.crs as ccrs
+    import numpy as np
+    from matplotlib import cm
+    import sys, os, argparse
+    import glob
+###
+
+### open cmip6 files
+### var=""
+## Models
+#ACCESS-CM2  CESM2-WACCM  MIROC6         MPI-ESM1-2-LR  
+#CESM2       EC-Earth3    MPI-ESM1-2-HR  MRI-ESM2-0
+
+
+
+    year = str(year) #198?, 199?, 200?
+    model= str(model) #"CESM2-WACCM"
+    mem_id = str(member) #"r1i1p1f1" #"r1i1p1f1", "r11i1p1f1"
+#    xr_in=xr.open_mfdataset('/work/bm1235/b382006/cmip6/'+model+'/'+mem_id+'/daily/'+year+'/Z*')
+## copy
+    iyear=int(year)
+    eyear=int(year)+10 ## plus one year
+
+# Define the base path and file pattern
+    file_patterns = [f"/work/bm1235/b382006/cmip6/{model}/{mem_id}/daily/{year}/Z{year}*" for year in range(iyear, eyear)]
+
+# Use glob to expand file paths and concatenate them
+    file_list = []
+    for pattern in file_patterns:
+        file_list.extend(glob.glob(pattern))
+
+    xr_in = xr.open_mfdataset(file_list)
+
+## copy
+
+    print('start preprocessing ...', iyear, eyear)
+
+### xr_in = xr_in.resample(time='D').mean()
+
+### compute climatology
+    window=31
+    groupby="dayofyear"
+    clim = xr_in['Z'].sel(plev='50000', drop=True).groupby("time.dayofyear").mean("time")
+    clim2 = clim.rolling(**{groupby:window}, center=True).mean().fillna(clim[-window:].mean(dim=groupby))
+
+#    ### compute anomaly
+    smooth=2 ### 8 for 6-hourly, 2 for daily
+    groupby='dayofyear'
+    anom=(xr_in['Z'].sel(plev='50000', drop=True).groupby('time.dayofyear') - clim2).rolling(time=smooth, center=True).mean()
+
+#    ### cts for computing geopotential height
+    g = 9.80665  # m s**-2
+    anom_gh=anom/g
+#    ### attributes
+    anom_gh.attrs['units'] = 'm'
+    anom_gh.attrs['long_name']= 'Geopotential Height Anomaly'
+
+    prefix="cmip6"
+    outdir="/scratch/b/b382006/cmip6/"+model+"/"+mem_id+"/factory/z500_day/"
+
+    if not os.path.exists(outdir):
+        os.makedirs(outdir)
+
+# SH reverse sign
+    #anom[:,:96,:] = anom[:,:96,:] * (-1)
+
+# set lat[0] and lat[-1] (North and South Pole) to zero, so that block cannot jump between Hemis (happens sometimes...)
+    anom_gh[:,0,:] = 0
+    anom_gh[:,-1,:] = 0
+#anom_gh.isel(time=15).plot()
+
+### saving by year and adding 5 days in december
+    y0=anom_gh.time[0].dt.year
+    yn=anom_gh.time[-1].dt.year
+#npers=20 ###5 days
+    for yy in range(int(y0),int(yn)+1):
+#    print(yy)
+        anoms = anom_gh.sel(time=anom_gh.time.dt.year.isin(yy))
+#       if (yy != yn):
+#        anom_tmp = anom_gh.sel(time=anom_gh.time.dt.year.isin(yy+1))
+#        anom_past = anom_tmp[:npers]
+#        anoms = xr.concat([anoms, anom_past], dim="time")
+#
+#       if (yy != y0):
+#        anom_tmp = anom_gh.sel(time=anom_gh.time.dt.year.isin(yy-1))
+#        anom_pre = anom_tmp[-npers:]
+#        anoms = xr.concat([anom_pre,anoms], dim = "time")
+
+        outfile=prefix+"-anom-z500_"+str(yy)+".nc"
+        print(outfile)
+
+        anoms.to_netcdf(outdir+outfile)
 
 # ======================================================================================================================================
 
 ###### SELECT FUNTION TO RUN ###############
-print("calc_VAPV()")
+#print("calc_VAPV()")
 
 import sys
 #infile = sys.argv[1]
@@ -736,8 +841,12 @@ import sys
 #outname = sys.argv[3]
 #calc_VAPV(infile,outdir,outname)
 
-print("calc_gh_anom()")
-calc_gh_anom()
+
+year = sys.argv[1]
+model = sys.argv[2]
+member = sys.argv[3]
+print("calc_gh_anom_day()",year,model,member)
+calc_gh_anom_day(year,model,member)
 
 ############################################
 # ==========================================================================================================================================
