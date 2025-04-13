@@ -189,7 +189,7 @@ def calc_VAPV(infile,outdir,outname):
 #            hybm = con.variables['hybm'][:]       # Hybrid level coefficient
     lons = con.variables['lon'][:]         # longitude
     lats = con.variables['lat'][:]         # latitude
-    levs = con.variables['plev'][:]*0.01         # latitude
+    levs = con.variables['level'][:]*0.01         # pressure
 #            shape = con.variables['T'].shape
     times = con.variables['time'][:]
 
@@ -299,7 +299,7 @@ def calc_VAPV(infile,outdir,outname):
     pv = ncfile.createVariable('VAPV', np.float32,('time','latitude','longitude'))
 
        #global attributes
-    ncfile.title = "ICON nextGEMS simulation"
+    ncfile.title = "IFS nextGEMS simulation"
     ncfile.source = "giub@giub.unibe.ch"
     ncfile.comment = "to analyse weather systems "
         #variable attributes
@@ -791,8 +791,8 @@ def calc_gh_anom():
 
 #calc_VAPV(infile,outdir,outname)
 
-print("calc_gh_anom")
-calc_gh_anom()
+#print("calc_gh_anom")
+#calc_gh_anom()
 
 ############################################
 # ==========================================================================================================================================
