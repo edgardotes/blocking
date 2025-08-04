@@ -1,0 +1,28 @@
+# main folder figures
+*png
+*jpg
+.ipynb_checkpoints
+*.tar.gz
+
+dask-worker-space/
+
+__pycache__/
+brunner/blocking/__pycache__/BlockingDetection.cpython-312.pyc
+brunner/blocking/__pycache__/utils.cpython-312.pyc
+
+### too big noteboks
+ICON_blocks_case.ipynb
+
+#tempest
+tempest/.ipynb_checkpoints
+
+###contrack
+contrack/.ipynb_checkpoints
+contrack/ConTrack/ 
+contrack/*out 
+contrack/*err
+
+#Brunner
+brunner/.ipynb_checkpoints
+brunner/*err
+brunner/*out
